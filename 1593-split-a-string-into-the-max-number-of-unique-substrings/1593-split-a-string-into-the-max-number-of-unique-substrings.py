@@ -1,15 +1,13 @@
 class Solution:
-    def maxUniqueSplit(self, s):
-        n = len(s)
-
-        def backtrack(s,path):
-            if not s:
-                res.append(path)
-
-            for i in range(1,len(s)+1):
-                if s[:i] not in path:
-                    backtrack(s[i:],path+[s[:i]])
-
-        res = []
-        backtrack(s,[])
-        return max([len(i) for i in res])
+    def maxUniqueSplit(self, s: str) -> int:
+        def maxU(s, soFar=set()):
+            if len(s) == 1 and s in soFar:
+                return 0
+            maxSplit = len(soFar)+1
+            for partition in range(1, len(s)):
+                a = s[:partition]
+                b = s[partition:]
+                if a not in soFar:
+                    maxSplit = max(maxSplit, maxU(b, soFar|{a}))
+            return maxSplit
+        return maxU(s)
